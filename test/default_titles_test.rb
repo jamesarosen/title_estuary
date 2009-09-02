@@ -11,6 +11,7 @@ class VillagesController < ApplicationController
   
   def index; render :nothing => true; end
   def new; render :nothing => true; end
+  def burninated; index; end
   def show; @village = Village.find(params[:id]); render :nothing => true; end
   def edit; @village = Village.find(params[:id]); render :nothing => true; end
   
@@ -29,7 +30,7 @@ class DefaultTitlesTest < ActionController::TestCase
     
     setup do
       ActionController::Routing::Routes.draw do |map|
-        map.resources :villages
+        map.resources :villages, :collection => { :burninated => :get }
       end
     end
     
@@ -77,6 +78,11 @@ class DefaultTitlesTest < ActionController::TestCase
         get :edit, :id => '3'
       end
       should_set_the_page_title_to "Edit Village: 3"
+    end
+    
+    context 'on a GET to a custom collection action' do
+      setup { get :burninated }
+      should_set_the_page_title_to "Villages: Burninated"
     end
     
   end

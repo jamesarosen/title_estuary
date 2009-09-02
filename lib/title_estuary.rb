@@ -29,7 +29,11 @@ module TitleEstuary
       when 'edit'
         "Edit #{controller.singularize}: #{instance}"
       else
-        ''
+        if instance.blank?
+          "#{controller.pluralize}: #{action}"
+        else
+          ''
+        end
       end.titleize
     end
   
