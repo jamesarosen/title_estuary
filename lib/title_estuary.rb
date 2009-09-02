@@ -37,18 +37,18 @@ module TitleEstuary
       end
       case action
       when 'index'
-        "All #{controller.pluralize}"
+        "All #{resource_name.pluralize}"
       when 'new', 'create'
-        "New #{controller.singularize}"
+        "New #{resource_name.singularize}"
       when 'show'
-        "#{controller.singularize} #{instance}"
+        "#{resource_name.singularize} #{instance}"
       when 'edit', 'update'
-        "Edit #{controller.singularize} #{instance}"
+        "Edit #{resource_name.singularize} #{instance}"
       else
         if instance.present?
-          "#{action} #{controller.singularize} #{instance}"
+          "#{action} #{resource_name.singularize} #{instance}"
         else
-          "#{action} #{controller.pluralize}"
+          "#{action} #{resource_name.pluralize}"
         end
       end.titleize
     end
