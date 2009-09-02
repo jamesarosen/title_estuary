@@ -9,7 +9,7 @@ module TitleEstuary
   module InstanceMethods
   
     def page_title
-      page_title_from_controller_and_action
+      I18n.t :"page.title.pickles.index", :default => page_title_from_controller_and_action
     end
     
     private
