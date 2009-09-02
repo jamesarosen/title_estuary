@@ -26,7 +26,7 @@ module TitleEstuary
         "New #{controller.singularize}"
       when 'show'
         "#{controller.singularize} #{instance}"
-      when 'edit'
+      when 'edit', 'update'
         "Edit #{controller.singularize} #{instance}"
       else
         if instance.blank?

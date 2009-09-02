@@ -15,6 +15,7 @@ class VillagesController < ApplicationController
   def burninated; index; end
   def show; @village = Village.find(params[:id]); render :nothing => true; end
   def edit; show; end
+  def update; edit; end
   def burninate; show; end
   
 end
@@ -86,6 +87,22 @@ class DefaultTitlesTest < ActionController::TestCase
         get :edit, :id => '3'
       end
       should_set_the_page_title_to "Edit Village 3"
+    end
+    
+    context 'on a PUT to :update for a resource that exists' do
+      setup do
+        Village.stubs(:find).returns(Village.new('East Umbridge'))
+        put :update, :id => 'seven'
+      end
+      should_set_the_page_title_to "Edit Village East Umbridge"
+    end
+    
+    context 'on a PUT to :update for a resource that does not exist (or is not set to an obvious instance variable)' do
+      setup do
+        Village.stubs(:find).returns(nil)
+        put :update, :id => '100'
+      end
+      should_set_the_page_title_to "Edit Village 100"
     end
     
     context 'on a GET to a custom collection action' do
