@@ -40,10 +40,10 @@ module TitleEstuary
       when 'edit', 'update'
         "Edit #{controller.singularize} #{instance}"
       else
-        if instance.blank?
-          "#{action} #{controller.pluralize}"
-        else
+        if instance.present?
           "#{action} #{controller.singularize} #{instance}"
+        else
+          "#{action} #{controller.pluralize}"
         end
       end.titleize
     end
