@@ -71,6 +71,14 @@ class DefaultTitlesTest < ActionController::TestCase
       should_set_the_page_title_to "Edit Village: Gloucestershire"
     end
     
+    context 'on a GET to :edit for a resource that does not exist' do
+      setup do
+        Village.stubs(:find).returns(nil)
+        get :edit, :id => '3'
+      end
+      should_set_the_page_title_to "Edit Village: 3"
+    end
+    
   end
   
 end
