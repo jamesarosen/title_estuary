@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/village_model_and_controller'
 
 VillagesController.class_eval do
   def index_with_dynamic_title
-    @content_for_page_title = 'A Custom Title'
+    self.page_title = 'A Custom Title'
     index_without_dynamic_title
   end
   alias_method :index_without_dynamic_title, :index

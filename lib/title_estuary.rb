@@ -9,8 +9,8 @@ module TitleEstuary
   # if applicable.
   def self.included(base)
     base.send :include, TitleEstuary::InstanceMethods
-    base.hide_action :page_title if base.respond_to?(:hide_action)
-    base.helper_method :page_title if base.respond_to?(:helper_method)
+    base.hide_action(:page_title) if base.respond_to?(:hide_action)
+    base.helper_method(:page_title, :page_title=) if base.respond_to?(:helper_method)
     if Object.const_defined?(:InheritedResources) && base < ::InheritedResources::Base
       base.send :include, TitleEstuary::InheritedResourcesSupport
     end
@@ -18,6 +18,13 @@ module TitleEstuary
   
   module InstanceMethods
   
+    # Get the page title. First checks for a dynamically-set
+    # title (set via <tt>#page_title=</tt> or via 
+    # <tt>content_for :page_title</tt>); if none has been set,
+    # uses a version from I18n under the key
+    # 'page.title.<controller>.<action>'; if no such value exists,
+    # tries to generate a reasonable sane default.
+    #
     # @return [String] the page title
     def page_title
       return @content_for_page_title if @content_for_page_title.present?
@@ -29,6 +36,23 @@ module TitleEstuary
       default = default_page_title_from_controller_and_action
       options = given_options.merge(:default => default)
       I18n.t page_title_i18n_key, options
+    end
+    
+    protected
+    
+    # Sets the page title.
+    #
+    # Available to views both as a helper method:
+    #
+    #   <% self.page_title = '...' -%>
+    #
+    # and via <tt>:content_for :page_title</tt>:
+    #
+    #   <% content_for :page_title do %>
+    #     ...
+    #   <% end %>
+    def page_title=(title)
+      @content_for_page_title = title
     end
     
     private
