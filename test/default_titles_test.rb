@@ -14,6 +14,14 @@ class DefaultTitlesTest < ActionController::TestCase
       context 'on a GET to :index' do
         setup { get :index }
         should_set_the_page_title_to 'All Villages'
+        should 'not generate the title twice' do
+          @controller.page_title
+          @controller.stubs :look_up_or_generate_page_title
+          @controller.page_title
+          assert_received @controller, :look_up_or_generate_page_title do |expect|
+            expect.never
+          end
+        end
       end
     
       context 'on a GET to :new' do

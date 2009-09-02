@@ -28,14 +28,7 @@ module TitleEstuary
     # @return [String] the page title
     def page_title
       return @content_for_page_title if @content_for_page_title.present?
-      given_options = if self.respond_to?(:interpolation_options)
-        interpolation_options
-      else
-        {}
-      end
-      default = default_page_title_from_controller_and_action
-      options = given_options.merge(:default => default)
-      I18n.t page_title_i18n_key, options
+      self.page_title = look_up_or_generate_page_title
     end
     
     protected
@@ -56,6 +49,17 @@ module TitleEstuary
     end
     
     private
+    
+    def look_up_or_generate_page_title
+      given_options = if self.respond_to?(:interpolation_options)
+        interpolation_options
+      else
+        {}
+      end
+      default = default_page_title_from_controller_and_action
+      options = given_options.merge(:default => default)
+      I18n.t page_title_i18n_key, options
+    end
     
     # @return [Symbol] the I18n key for the page title for
     #         this controller/action pair.
