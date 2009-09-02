@@ -26,6 +26,8 @@ module TitleEstuary
         "New #{controller.singularize}"
       when 'show'
         "#{controller.singularize}: #{instance}"
+      when 'edit'
+        "Edit #{controller.singularize}: #{instance}"
       else
         ''
       end.titleize

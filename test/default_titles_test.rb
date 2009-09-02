@@ -12,6 +12,7 @@ class VillagesController < ApplicationController
   def index; render :nothing => true; end
   def new; render :nothing => true; end
   def show; @village = Village.find(params[:id]); render :nothing => true; end
+  def edit; @village = Village.find(params[:id]); render :nothing => true; end
   
 end
 
@@ -60,6 +61,14 @@ class DefaultTitlesTest < ActionController::TestCase
         get :show, :id => '2'
       end
       should_set_the_page_title_to "Village: 2"
+    end
+    
+    context 'on a GET to :edit for a resource that exists' do
+      setup do
+        Village.stubs(:find).returns(Village.new('Gloucestershire'))
+        get :edit, :id => 'something'
+      end
+      should_set_the_page_title_to "Edit Village: Gloucestershire"
     end
     
   end
