@@ -12,6 +12,7 @@ module TitleEstuary
   module InstanceMethods
   
     def page_title
+      return @content_for_page_title if @content_for_page_title.present?
       given_options = if self.respond_to?(:interpolation_options)
         interpolation_options
       else
