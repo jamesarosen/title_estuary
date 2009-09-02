@@ -1,9 +1,8 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class InterpolatedPageTitlesTest < ActionController::TestCase
-  extend PageTitleMacros
+  include PageTitleMacros
   extend DeclareRestfulTitleizedController
-  include TranslationMacros
   
   a_restful_titleized_controller('stuffed_animals_controller') do
     

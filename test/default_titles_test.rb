@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class DefaultTitlesTest < ActionController::TestCase
-  extend PageTitleMacros
+  include PageTitleMacros
   extend DeclareRestfulTitleizedController
   
   a_restful_titleized_controller('villages_controller', 
@@ -9,6 +9,8 @@ class DefaultTitlesTest < ActionController::TestCase
                                  :member     => { :burninate  => :get }) do
                                    
     context 'with no custom page titles set up' do
+      
+      setup { clear_translations! }
     
       should "not have a :page_title action" do
         assert !VillagesController.action_methods.map { |a| a.to_sym }.include?(:page_title)

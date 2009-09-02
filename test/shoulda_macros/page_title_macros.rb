@@ -1,20 +1,28 @@
 module PageTitleMacros
   
-  def should_set_the_page_title_to(title)
-    should "set the page title to #{title}" do
-      assert_equal title, @controller.page_title
+  def self.included(base)
+    base.extend PageTitleMacros::ControllerMacros
+  end
+
+  def clear_translations!
+    I18n.reload!
+  end
+
+  def define_translation(key, value)
+    hash = key.to_s.split('.').reverse.inject(value) do |value, key_part|
+      { key_part.to_sym => value }
     end
+    I18n.backend.send :merge_translations, I18n.locale, hash
   end
   
-  def should_ask_for_a_translation_of(key)
-    should "ask for a translation of :#{key}" do
-      @controller.page_title
-      assert_received ::I18n, :t do |expect|
-        expect.with do |*args|
-          args.first == key.to_sym
-        end
+  module ControllerMacros
+    
+    def should_set_the_page_title_to(title)
+      should "set the page title to #{title}" do
+        assert_equal title, @controller.page_title
       end
     end
+    
   end
   
 end
