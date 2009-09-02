@@ -54,6 +54,14 @@ class DefaultTitlesTest < ActionController::TestCase
       should_set_the_page_title_to "Village: Bostonburgh"
     end
     
+    context 'on a GET to :show for a resource that does not exist' do
+      setup do
+        Village.stubs(:find).returns(nil)
+        get :show, :id => '2'
+      end
+      should_set_the_page_title_to "Village: 2"
+    end
+    
   end
   
 end
