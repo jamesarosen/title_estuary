@@ -23,3 +23,4 @@ test_dir = File.dirname(__FILE__)
 # load title_estuary:  
   ActiveSupport::Dependencies.load_paths << File.expand_path(File.join(test_dir, '..', 'lib'))
   require_dependency 'title_estuary'
+  Shoulda.autoload_macros File.join(test_dir, '..')

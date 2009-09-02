@@ -21,42 +21,23 @@ class PicklesController < ApplicationController
 end
 
 class SimpleCustomTitlesTest < ActionController::TestCase
-  tests PicklesController
+  extend PageTitleMacros
+  extend DeclareRestfulTitleizedController
   
-  def self.should_set_the_page_title_to(title)
-    should "set the page title to #{title}" do
-      assert_equal title, @controller.page_title
-    end
-  end
-  
-  def self.should_ask_for_a_translation_of(key)
-    should "ask for a translation of :#{key}" do
-      @controller.page_title
-      assert_received ::I18n, :t do |expect|
-        expect.with do |*args|
-          args.first == key.to_sym
+  a_restful_titleized_controller('pickles_controller') do
+    
+    context 'with custom page titles set up' do
+    
+      context 'on a GET to :index' do
+        setup do
+          ::I18n.stubs(:t).returns "Some Pickles!"
+          get :index
         end
+        should_set_the_page_title_to 'Some Pickles!'
+        should_ask_for_a_translation_of 'page.title.pickles.index'
       end
+      
     end
-  end
-  
-  context 'a controller with TitleEstuary installed and with custom page titles set up' do
-    
-    setup do
-      ActionController::Routing::Routes.draw do |map|
-        map.resources :pickles
-      end
-    end
-    
-    context 'on a GET to :index' do
-      setup do
-        ::I18n.stubs(:t).returns "Some Pickles!"
-        get :index
-      end
-      should_set_the_page_title_to 'Some Pickles!'
-      should_ask_for_a_translation_of 'page.title.pickles.index'
-    end
-    
   end
   
 end
