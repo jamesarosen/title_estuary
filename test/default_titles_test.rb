@@ -13,7 +13,7 @@ class VillagesController < ApplicationController
   def new; render :nothing => true; end
   def burninated; index; end
   def show; @village = Village.find(params[:id]); render :nothing => true; end
-  def edit; @village = Village.find(params[:id]); render :nothing => true; end
+  def edit; show; end
   def burninate; show; end
   
 end
@@ -55,15 +55,15 @@ class DefaultTitlesTest < ActionController::TestCase
         Village.stubs(:find).returns(Village.new('Bostonburgh'))
         get :show, :id => 'anything'
       end
-      should_set_the_page_title_to "Village: Bostonburgh"
+      should_set_the_page_title_to "Village Bostonburgh"
     end
     
-    context 'on a GET to :show for a resource that does not exist' do
+    context 'on a GET to :show for a resource that does not exist (or is not set to an obvious instance variable)' do
       setup do
         Village.stubs(:find).returns(nil)
         get :show, :id => '2'
       end
-      should_set_the_page_title_to "Village: 2"
+      should_set_the_page_title_to "Village 2"
     end
     
     context 'on a GET to :edit for a resource that exists' do
@@ -71,20 +71,20 @@ class DefaultTitlesTest < ActionController::TestCase
         Village.stubs(:find).returns(Village.new('Gloucestershire'))
         get :edit, :id => 'something'
       end
-      should_set_the_page_title_to "Edit Village: Gloucestershire"
+      should_set_the_page_title_to "Edit Village Gloucestershire"
     end
     
-    context 'on a GET to :edit for a resource that does not exist' do
+    context 'on a GET to :edit for a resource that does not exist (or is not set to an obvious instance variable)' do
       setup do
         Village.stubs(:find).returns(nil)
         get :edit, :id => '3'
       end
-      should_set_the_page_title_to "Edit Village: 3"
+      should_set_the_page_title_to "Edit Village 3"
     end
     
     context 'on a GET to a custom collection action' do
       setup { get :burninated }
-      should_set_the_page_title_to "Villages: Burninated"
+      should_set_the_page_title_to "Burninated Villages"
     end
     
     context 'on a GET on a custom member action for a resource that exists' do
@@ -92,15 +92,15 @@ class DefaultTitlesTest < ActionController::TestCase
         Village.stubs(:find).returns(Village.new('Parrotshire'))
         get :burninate, :id => '14'
       end
-      should_set_the_page_title_to "Village: Parrotshire: Burninate"
+      should_set_the_page_title_to "Burninate Village Parrotshire"
     end
     
-    context 'on a GET to a custom member action for a resource that does not exist' do
+    context 'on a GET to a custom member action for a resource that does not exist (or is not set to an obvious instance variable)' do
       setup do
         Village.stubs(:find).returns(nil)
         get :burninate, :id => '9'
       end
-      should_set_the_page_title_to "Village: 9: Burninate"
+      should_set_the_page_title_to "Burninate Village 9"
     end
     
   end

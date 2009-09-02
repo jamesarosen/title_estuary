@@ -25,14 +25,14 @@ module TitleEstuary
       when 'new'
         "New #{controller.singularize}"
       when 'show'
-        "#{controller.singularize}: #{instance}"
+        "#{controller.singularize} #{instance}"
       when 'edit'
-        "Edit #{controller.singularize}: #{instance}"
+        "Edit #{controller.singularize} #{instance}"
       else
         if instance.blank?
-          "#{controller.pluralize}: #{action}"
+          "#{action} #{controller.pluralize}"
         else
-          "#{controller.singularize}: #{instance}: #{action}"
+          "#{action} #{controller.singularize} #{instance}"
         end
       end.titleize
     end
