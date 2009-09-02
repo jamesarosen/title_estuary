@@ -10,7 +10,7 @@ class VillagesController < ApplicationController
   include TitleEstuary
   
   def index; render :nothing => true; end
-  def new; render :nothing => true; end
+  def new; index; end
   def create; new; end
   def burninated; index; end
   def show; @village = Village.find(params[:id]); render :nothing => true; end
