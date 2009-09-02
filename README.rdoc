@@ -75,12 +75,30 @@ your controller:
   end
   
 If you need more dynamic titles than simple interpolation affords,
-set the title in an action manually:
+set the title manually in an action:
 
-  # in RAILS_ROOT/app/controllers/graphs_controller.rb:
-  class GraphsController < ActionController::Base
+  # in RAILS_ROOT/app/controllers/projects_controller.rb:
+  class ProjectsController < ActionController::Base
     def show
-      @graph = Graph.find(params[:id])
-      self.page_title = "A title based on #{@graph.some_complex_string}"
+      @project = Project.find(params[:id])
+      self.page_title = "A title based on #{@project.some_complex_string}"
     end
   end
+  
+or in a filter:
+
+  # in RAILS_ROOT/app/controllers/projects_controller.rb:
+  class ProjectsController < ActionController::Base
+    before_filter :set_title
+    private
+    def set_title
+      self.page_title = "Some complex title"
+    end
+  end
+  
+or from a view:
+
+  # in RAILS_ROOT/app/view/projects/index.html.erb:
+  <% content_for :page_title do %>
+    Some complex page title
+  <% end %>
