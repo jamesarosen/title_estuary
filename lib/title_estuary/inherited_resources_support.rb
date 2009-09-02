@@ -4,10 +4,13 @@ module TitleEstuary
     
     private
     
+    # @return [#to_s] the requested_resource as loaded by
+    #                 InheritedResources.
     def page_title_instance
       resource
     end
     
+    # @return [String] an improved guess for the name of the requested resource.
     def page_title_singular_resource_name
       resource_name = if resource_class
         if resource_class.respond_to?(:human_name)
