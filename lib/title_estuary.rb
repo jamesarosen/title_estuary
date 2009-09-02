@@ -19,7 +19,8 @@ module TitleEstuary
       else
         {}
       end
-      options = given_options.merge(:default => page_title_from_controller_and_action)
+      default = default_page_title_from_controller_and_action
+      options = given_options.merge(:default => default)
       I18n.t page_title_i18n_key, options
     end
     
@@ -29,7 +30,7 @@ module TitleEstuary
       "page.title.#{params[:controller]}.#{params[:action]}".to_sym
     end
     
-    def page_title_from_controller_and_action
+    def default_page_title_from_controller_and_action
       action = params[:action].to_s
       resource_name = page_title_singular_resource_name
       resource = page_title_instance
