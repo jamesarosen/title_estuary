@@ -1,12 +1,11 @@
 require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/village_model_and_controller'
 
 class DefaultTitlesTest < ActionController::TestCase
   include PageTitleMacros
-  extend DeclareRestfulTitleizedController
+  tests VillagesController
   
-  a_restful_titleized_controller('villages_controller',
-                                 :collection => { :burninated => :get },
-                                 :member     => { :burninate  => :get }) do
+  context 'a RESTful, titleize controller' do
                                    
     context 'with no custom page titles set up' do
       

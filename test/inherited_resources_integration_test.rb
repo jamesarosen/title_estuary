@@ -6,45 +6,31 @@ require 'inherited_resources/class_methods'
 require 'inherited_resources/url_helpers'
 require 'inherited_resources/base'
 
-class Person
-  def initialize(name)
-    @name = name
-  end
-  def to_s
-    @name.to_s
-  end
+class Pizza
+  def initialize(name); @name = name.to_s; end
+  def to_s; @name; end
+  def to_param; '1'; end
+  def method_missing(*args, &block); self; end
 end
 
-class AccountsController < InheritedResources::Base
-  self.resource_class = Person
+class DeliciousThingsController < InheritedResources::Base
+  self.resource_class = Pizza
   include TitleEstuary
-  def index; render :nothing => true; end
-  def confirmed; index; end
-  def new; index; end
-  def create; index; end
-  def show; @account = Person.find(params[:id]); render :nothing => true; end
-  def edit; show; end
-  def update; show; end
-  def confirm; show; end
+  def cheesey; index; end
+  def add_topping; show; end
+  def pizza_url(*args); delicious_thing_url(*args); end
+end
+
+ActionController::Routing::Routes.draw do |map|
+  map.resources :delicious_things, :collection => { :cheesey     => :get },
+                                   :member     => { :add_topping => :get }
 end
 
 class InheritedResourcesIntegrationTest < ActionController::TestCase
   include PageTitleMacros
-  extend DeclareRestfulTitleizedController
-  tests AccountsController
-  
-  def declare_route_resources(resources, options = {})
-    ActionController::Routing::Routes.draw do |map|
-      map.resources resources, options
-    end
-  end
+  tests DeliciousThingsController
   
   context 'a RESTful controller using both Title Estuary and Inherited Resources' do
-    
-    setup do
-      declare_route_resources :accounts, :collection => { :confirmed => :get },
-                                         :member     => { :confirm => :get }
-    end
     
     context 'with custom page titles that involve interpolation' do
       
@@ -53,91 +39,65 @@ class InheritedResourcesIntegrationTest < ActionController::TestCase
       end
       
       should 'have inherited-resources support installed' do
-        assert AccountsController < TitleEstuary::InheritedResourcesSupport
+        assert DeliciousThingsController < TitleEstuary::InheritedResourcesSupport
       end
       
       context 'on a GET to :index' do
-        setup { get :index }
-        should_set_the_page_title_to 'All People'
+        setup do
+          Pizza.stubs(:find).returns([])
+          get :index
+        end
+        should_set_the_page_title_to 'All Pizzas'
       end
       
       context 'on a GET to :new' do
         setup { get :new }
-        should_set_the_page_title_to 'New Person'
+        should_set_the_page_title_to 'New Pizza'
       end
     
       context 'on a POST to :create that fails' do
         setup { post :create }
-        should_set_the_page_title_to 'New Person'
+        should_set_the_page_title_to 'New Pizza'
       end
     
-      context 'on a GET to :show for a resource that exists' do
+      context 'on a GET to :show' do
         setup do
-          Person.stubs(:find).returns(Person.new('Carl'))
+          Pizza.stubs(:find).returns(Pizza.new('Vegetarian Special'))
           get :show, :id => 'anything'
         end
-        should_set_the_page_title_to "Person Carl"
+        should_set_the_page_title_to "Pizza Vegetarian Special"
       end
     
-      context 'on a GET to :show for a resource that does not exist (or is not set to an obvious instance variable)' do
+      context 'on a GET to :edit' do
         setup do
-          Person.stubs(:find).returns(nil)
-          get :show, :id => '2'
-        end
-        should_set_the_page_title_to "Person 2"
-      end
-    
-      context 'on a GET to :edit for a resource that exists' do
-        setup do
-          Person.stubs(:find).returns(Person.new('Wendy'))
+          Pizza.stubs(:find).returns(Pizza.new('NY Thin Crust'))
           get :edit, :id => 'something'
         end
-        should_set_the_page_title_to "Edit Person Wendy"
+        should_set_the_page_title_to "Edit Pizza NY Thin Crust"
       end
     
-      context 'on a GET to :edit for a resource that does not exist (or is not set to an obvious instance variable)' do
+      context 'on a PUT to :update' do
         setup do
-          Person.stubs(:find).returns(nil)
-          get :edit, :id => '3'
-        end
-        should_set_the_page_title_to "Edit Person 3"
-      end
-    
-      context 'on a PUT to :update for a resource that exists' do
-        setup do
-          Person.stubs(:find).returns(Person.new('Dwayne'))
+          Pizza.stubs(:find).returns(Pizza.new('Neapolitan'))
           put :update, :id => 'seven'
         end
-        should_set_the_page_title_to "Edit Person Dwayne"
-      end
-    
-      context 'on a PUT to :update for a resource that does not exist (or is not set to an obvious instance variable)' do
-        setup do
-          Person.stubs(:find).returns(nil)
-          put :update, :id => '100'
-        end
-        should_set_the_page_title_to "Edit Person 100"
+        should_set_the_page_title_to "Edit Pizza Neapolitan"
       end
     
       context 'on a GET to a custom collection action' do
-        setup { get :confirmed }
-        should_set_the_page_title_to "Confirmed People"
+        setup do
+          Pizza.stubs(:find).returns([])
+          get :cheesey
+        end
+        should_set_the_page_title_to "Cheesey Pizzas"
       end
     
       context 'on a GET on a custom member action for a resource that exists' do
         setup do
-          Person.stubs(:find).returns(Person.new('Regina'))
-          get :confirm, :id => '14'
+          Pizza.stubs(:find).returns(Pizza.new('Margherita'))
+          get :add_topping, :id => '14'
         end
-        should_set_the_page_title_to "Confirm Person Regina"
-      end
-    
-      context 'on a GET to a custom member action for a resource that does not exist (or is not set to an obvious instance variable)' do
-        setup do
-          Person.stubs(:find).returns(nil)
-          get :confirm, :id => '9'
-        end
-        should_set_the_page_title_to "Confirm Person 9"
+        should_set_the_page_title_to "Add Topping Pizza Margherita"
       end
       
     end

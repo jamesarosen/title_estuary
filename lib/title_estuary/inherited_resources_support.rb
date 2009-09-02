@@ -8,20 +8,20 @@ module TitleEstuary
       end
       case action
       when 'index'
-        "All #{resource_name.pluralize}"
+        "All #{resource_name.pluralize.titleize}"
       when 'new', 'create'
-        "New #{resource_name.singularize}"
+        "New #{resource_name.singularize.titleize}"
       when 'show'
-        "#{resource_name.singularize} #{instance}"
+        "#{resource_name.singularize.titleize} #{instance}"
       when 'edit', 'update'
-        "Edit #{resource_name.singularize} #{instance}"
+        "Edit #{resource_name.singularize.titleize} #{instance}"
       else
         if instance.present?
-          "#{action} #{resource_name.singularize} #{instance}"
+          "#{action.titleize} #{resource_name.singularize.titleize} #{instance}"
         else
-          "#{action} #{resource_name.pluralize}"
+          "#{action.titleize} #{resource_name.pluralize.titleize}"
         end
-      end.titleize
+      end
     end
     
     private
