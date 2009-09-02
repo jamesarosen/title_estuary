@@ -95,6 +95,14 @@ class DefaultTitlesTest < ActionController::TestCase
       should_set_the_page_title_to "Village: Parrotshire: Burninate"
     end
     
+    context 'on a GET to a custom member action for a resource that does not exist' do
+      setup do
+        Village.stubs(:find).returns(nil)
+        get :burninate, :id => '9'
+      end
+      should_set_the_page_title_to "Village: 9: Burninate"
+    end
+    
   end
   
 end
