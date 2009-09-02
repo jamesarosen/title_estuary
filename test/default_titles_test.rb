@@ -11,10 +11,6 @@ class DefaultTitlesTest < ActionController::TestCase
       
       setup { clear_translations! }
     
-      should "not have a :page_title action" do
-        assert !VillagesController.action_methods.map { |a| a.to_sym }.include?(:page_title)
-      end
-    
       context 'on a GET to :index' do
         setup { get :index }
         should_set_the_page_title_to 'All Villages'

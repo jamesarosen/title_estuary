@@ -4,6 +4,7 @@ module TitleEstuary
   def self.included(base)
     base.send :include, TitleEstuary::InstanceMethods
     base.hide_action :page_title if base.respond_to?(:hide_action)
+    base.helper_method :page_title if base.respond_to?(:helper_method)
     if Object.const_defined?(:InheritedResources) && base < ::InheritedResources::Base
       base.send :include, TitleEstuary::InheritedResourcesSupport
     end
@@ -29,9 +30,10 @@ module TitleEstuary
     end
     
     def page_title_from_controller_and_action
-      action, controller = params[:action].to_s, params[:controller].to_s
+      action = params[:action].to_s
+      resource_name = page_title_singular_resource_name
       if params[:id]
-        instance = instance_variable_get(:"@#{controller.singularize}") || params[:id]
+        instance = instance_variable_get(:"@#{resource_name}") || params[:id]
       end
       case action
       when 'index'
@@ -49,6 +51,10 @@ module TitleEstuary
           "#{action} #{controller.pluralize}"
         end
       end.titleize
+    end
+    
+    def page_title_singular_resource_name
+      params[:controller].singularize
     end
   
   end
