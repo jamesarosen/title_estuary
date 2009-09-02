@@ -6,13 +6,20 @@ module TitleEstuary
   # <tt>#page_title</tt> as an action and makes that
   # method available to helpers and views; it also
   # auto-includes TitleEstuary::InheritedResourcesSupport
+  # and TitleEstuary::HighVoltageSupport
   # if applicable.
+  #
+  # @see http://github.com/josevalim/inherited_resources/
+  # @see http://github.com/thoughtbot/high_voltage
   def self.included(base)
     base.send :include, TitleEstuary::InstanceMethods
     base.hide_action(:page_title) if base.respond_to?(:hide_action)
     base.helper_method(:page_title, :page_title=) if base.respond_to?(:helper_method)
-    if Object.const_defined?(:InheritedResources) && base < ::InheritedResources::Base
+    if Object.const_defined?(:InheritedResources) && base <= ::InheritedResources::Base
       base.send :include, TitleEstuary::InheritedResourcesSupport
+    end
+    if Object.const_defined?(:HighVoltage) && base <= ::HighVoltage::PagesController
+      base.send :include, TitleEstuary::HighVoltageSupport
     end
   end
   
