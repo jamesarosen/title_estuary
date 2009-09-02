@@ -4,7 +4,7 @@ class DefaultTitlesTest < ActionController::TestCase
   include PageTitleMacros
   extend DeclareRestfulTitleizedController
   
-  a_restful_titleized_controller('villages_controller', 
+  a_restful_titleized_controller('villages_controller',
                                  :collection => { :burninated => :get },
                                  :member     => { :burninate  => :get }) do
                                    

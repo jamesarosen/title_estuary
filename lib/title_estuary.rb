@@ -4,6 +4,9 @@ module TitleEstuary
   def self.included(base)
     base.send :include, TitleEstuary::InstanceMethods
     base.hide_action :page_title if base.respond_to?(:hide_action)
+    if Object.const_defined?(:InheritedResources) && base < ::InheritedResources::Base
+      base.send :include, TitleEstuary::InheritedResourcesSupport
+    end
   end
   
   module InstanceMethods
@@ -21,8 +24,7 @@ module TitleEstuary
     private
     
     def page_title_i18n_key
-      action, controller = params[:action].to_s, params[:controller].to_s
-      "page.title.#{controller}.#{action}".to_sym
+      "page.title.#{params[:controller]}.#{params[:action]}".to_sym
     end
     
     def page_title_from_controller_and_action
