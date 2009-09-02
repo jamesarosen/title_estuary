@@ -44,7 +44,7 @@ module TitleEstuary
     def default_page_title_from_controller_and_action
       action = params[:action].to_s
       resource_name = page_title_singular_resource_name
-      resource = page_title_instance
+      resource = page_title_resource
       case action
       when 'index'
         "All #{resource_name.pluralize.titleize}"
@@ -65,7 +65,7 @@ module TitleEstuary
     
     # @return [#to_s] an instance variable representing the requested
     #                 resource if it's in an obvious location.
-    def page_title_instance
+    def page_title_resource
       if params[:id]
         instance_variable_get(:"@#{page_title_singular_resource_name}") || params[:id]
       end

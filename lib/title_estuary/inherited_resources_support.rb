@@ -6,7 +6,7 @@ module TitleEstuary
     
     # @return [#to_s] the requested_resource as loaded by
     #                 InheritedResources.
-    def page_title_instance
+    def page_title_resource
       resource
     end
     
