@@ -50,6 +50,11 @@ module TitleEstuary
     
     private
     
+    # @return [String] the I18n version of the page
+    # title, defaulting to the generated version.
+    #
+    # @see #page_title_i18n_key
+    # @see #default_page_title_from_controller_and_action
     def look_up_or_generate_page_title
       given_options = if self.respond_to?(:interpolation_options)
         interpolation_options
