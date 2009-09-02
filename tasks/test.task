@@ -12,6 +12,7 @@ if Object.const_defined?(:LOAD_TITLE_ESTUARY_BUILD_TASKS) && LOAD_TITLE_ESTUARY_
     fl.include "#{TITLE_ESTUARY_PROJECT_ROOT}/test/**/*_test.rb"
     fl.exclude "#{TITLE_ESTUARY_PROJECT_ROOT}/test/test_helper.rb"
     fl.exclude "#{TITLE_ESTUARY_PROJECT_ROOT}/test/lib/**/*.rb"
+    fl.exclude "#{TITLE_ESTUARY_PROJECT_ROOT}/test/vendor/**/*.rb"
   end
 
   Rake::TestTask.new(:test) do |t|
