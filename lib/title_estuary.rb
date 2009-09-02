@@ -9,7 +9,13 @@ module TitleEstuary
   module InstanceMethods
   
     def page_title
-      I18n.t page_title_i18n_key, :default => page_title_from_controller_and_action
+      given_options = if self.respond_to?(:interpolation_options)
+        interpolation_options
+      else
+        {}
+      end
+      options = given_options.merge(:default => page_title_from_controller_and_action)
+      I18n.t page_title_i18n_key, options
     end
     
     private
