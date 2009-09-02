@@ -11,6 +11,7 @@ class VillagesController < ApplicationController
   
   def index; render :nothing => true; end
   def new; render :nothing => true; end
+  def create; new; end
   def burninated; index; end
   def show; @village = Village.find(params[:id]); render :nothing => true; end
   def edit; show; end
@@ -47,6 +48,11 @@ class DefaultTitlesTest < ActionController::TestCase
     
     context 'on a GET to :new' do
       setup { get :new }
+      should_set_the_page_title_to 'New Village'
+    end
+    
+    context 'on a POST to :create that fails' do
+      setup { post :create }
       should_set_the_page_title_to 'New Village'
     end
     

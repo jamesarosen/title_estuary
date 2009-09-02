@@ -22,7 +22,7 @@ module TitleEstuary
       case action
       when 'index'
         "All #{controller.pluralize}"
-      when 'new'
+      when 'new', 'create'
         "New #{controller.singularize}"
       when 'show'
         "#{controller.singularize} #{instance}"
