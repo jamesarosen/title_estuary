@@ -7,6 +7,7 @@ class VillagesController < ApplicationController
   include TitleEstuary
   
   def index; render :nothing => true; end
+  def new; render :nothing => true; end
   
 end
 
@@ -32,13 +33,13 @@ class DefaultTitlesTest < ActionController::TestCase
     end
     
     context 'on a GET to :index' do
-      
-      setup do
-        get :index
-      end
-      
+      setup { get :index }
       should_set_the_page_title_to 'All Villages'
-      
+    end
+    
+    context 'on a GET to :new' do
+      setup { get :new }
+      should_set_the_page_title_to 'New Village'
     end
     
   end
