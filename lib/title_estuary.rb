@@ -9,10 +9,15 @@ module TitleEstuary
   module InstanceMethods
   
     def page_title
-      I18n.t :"page.title.pickles.index", :default => page_title_from_controller_and_action
+      I18n.t page_title_i18n_key, :default => page_title_from_controller_and_action
     end
     
     private
+    
+    def page_title_i18n_key
+      action, controller = params[:action].to_s, params[:controller].to_s
+      "page.title.#{controller}.#{action}".to_sym
+    end
     
     def page_title_from_controller_and_action
       action, controller = params[:action].to_s, params[:controller].to_s
