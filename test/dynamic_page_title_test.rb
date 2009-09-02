@@ -32,13 +32,13 @@ class DynamicPageTitle < ActionController::TestCase
       
       should 'use the dynamic title instead of the default' do
         get :index
-        assert_equal 'A Custom Title', @controller.page_title
+        assert_page_title_is 'A Custom Title'
       end
       
       should 'use the dynamic title instead of a custom one from the I18n framework' do
         define_translation 'page.title.villages.index', 'something else'
         get :index
-        assert_equal 'A Custom Title', @controller.page_title
+        assert_page_title_is 'A Custom Title'
       end
       
     end

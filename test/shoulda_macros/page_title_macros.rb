@@ -15,11 +15,15 @@ module PageTitleMacros
     I18n.backend.send :merge_translations, I18n.locale, hash
   end
   
+  def assert_page_title_is(title)
+    assert_equal title, @controller.page_title
+  end
+  
   module ControllerMacros
     
     def should_set_the_page_title_to(title)
       should "set the page title to #{title}" do
-        assert_equal title, @controller.page_title
+        assert_page_title_is title
       end
     end
     
