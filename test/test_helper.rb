@@ -25,12 +25,12 @@ test_dir = File.dirname(__FILE__)
   require_dependency 'title_estuary'
   Shoulda.autoload_macros File.join(test_dir, '..')
   
-# load external libraries vendored for testing:
-  Dir.glob("#{test_dir}/vendor/*/lib").each do |vendor_lib_dir|
-    ActiveSupport::Dependencies.load_paths << vendor_lib_dir
-    $LOAD_PATH << vendor_lib_dir
-  end
+# load external libraries vendored for testing:  
   Dir.glob("#{test_dir}/vendor/*/app/*").each do |vendor_rails_app_dir|
     ActiveSupport::Dependencies.load_paths << vendor_rails_app_dir
     $LOAD_PATH << vendor_rails_app_dir
+  end
+  Dir.glob("#{test_dir}/vendor/*/lib").each do |vendor_lib_dir|
+    ActiveSupport::Dependencies.load_paths << vendor_lib_dir
+    $LOAD_PATH << vendor_lib_dir
   end
