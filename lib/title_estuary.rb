@@ -21,14 +21,14 @@ module TitleEstuary
       end
       case action
       when 'index'
-        "All #{controller.pluralize.titleize}"
+        "All #{controller.pluralize}"
       when 'new'
-        "New #{controller.singularize.titleize}"
+        "New #{controller.singularize}"
       when 'show'
-        "#{controller.singularize.titleize}: #{instance.titleize}"
+        "#{controller.singularize}: #{instance}"
       else
-        nil
-      end
+        ''
+      end.titleize
     end
   
   end
