@@ -7,7 +7,9 @@ module TitleEstuary
     # @return [#to_s] the requested_resource as loaded by
     #                 InheritedResources.
     def page_title_resource
-      resource
+      # it should be loaded by now, but if not, don't
+      # make a special request on our behalf:
+      get_resource_ivar
     end
     
     # @return [String] an improved guess for the name of the requested resource.
