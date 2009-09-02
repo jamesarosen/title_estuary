@@ -1,25 +1,5 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class Pickle
-  attr_reader :name
-  def initialize(name); @name = name; end
-  def to_s; name; end
-end
-
-class PicklesController < ApplicationController
-  include TitleEstuary
-  
-  def index; render :nothing => true; end
-  def new; index; end
-  def create; new; end
-  def burninated; index; end
-  def show; @pickle = Pickle.find(params[:id]); render :nothing => true; end
-  def edit; show; end
-  def update; edit; end
-  def burninate; show; end
-  
-end
-
 class SimpleCustomTitlesTest < ActionController::TestCase
   extend PageTitleMacros
   extend DeclareRestfulTitleizedController
