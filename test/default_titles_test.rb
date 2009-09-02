@@ -1,6 +1,9 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class Village
+  attr_reader :name
+  def initialize(name); @name = name; end
+  def to_s; name; end
 end
 
 class VillagesController < ApplicationController
@@ -8,6 +11,7 @@ class VillagesController < ApplicationController
   
   def index; render :nothing => true; end
   def new; render :nothing => true; end
+  def show; @village = Village.find(params[:id]); render :nothing => true; end
   
 end
 
@@ -40,6 +44,14 @@ class DefaultTitlesTest < ActionController::TestCase
     context 'on a GET to :new' do
       setup { get :new }
       should_set_the_page_title_to 'New Village'
+    end
+    
+    context 'on a GET to :show for a resource that exists' do
+      setup do
+        Village.stubs(:find).returns(Village.new('Bostonburgh'))
+        get :show, :id => 'anything'
+      end
+      should_set_the_page_title_to "Village: Bostonburgh"
     end
     
   end
