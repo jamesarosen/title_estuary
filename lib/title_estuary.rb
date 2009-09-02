@@ -32,25 +32,29 @@ module TitleEstuary
     def page_title_from_controller_and_action
       action = params[:action].to_s
       resource_name = page_title_singular_resource_name
-      if params[:id]
-        instance = instance_variable_get(:"@#{resource_name}") || params[:id]
-      end
+      resource = page_title_instance
       case action
       when 'index'
-        "All #{resource_name.pluralize}"
+        "All #{resource_name.pluralize.titleize}"
       when 'new', 'create'
-        "New #{resource_name.singularize}"
+        "New #{resource_name.singularize.titleize}"
       when 'show'
-        "#{resource_name.singularize} #{instance}"
+        "#{resource_name.singularize.titleize} #{resource}"
       when 'edit', 'update'
-        "Edit #{resource_name.singularize} #{instance}"
+        "Edit #{resource_name.singularize.titleize} #{resource}"
       else
-        if instance.present?
-          "#{action} #{resource_name.singularize} #{instance}"
+        if resource.present?
+          "#{action.titleize} #{resource_name.singularize.titleize} #{resource}"
         else
-          "#{action} #{resource_name.pluralize}"
+          "#{action.titleize} #{resource_name.pluralize.titleize}"
         end
-      end.titleize
+      end
+    end
+    
+    def page_title_instance
+      if params[:id]
+        instance_variable_get(:"@#{page_title_singular_resource_name}") || params[:id]
+      end
     end
     
     def page_title_singular_resource_name
