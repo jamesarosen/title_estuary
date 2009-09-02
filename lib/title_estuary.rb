@@ -15,10 +15,13 @@ module TitleEstuary
     base.send :include, TitleEstuary::InstanceMethods
     base.hide_action(:page_title) if base.respond_to?(:hide_action)
     base.helper_method(:page_title, :page_title=) if base.respond_to?(:helper_method)
-    if Object.const_defined?(:InheritedResources) && base <= ::InheritedResources::Base
+    if Object.const_defined?(:InheritedResources) &&
+         base <= ::InheritedResources::Base
       base.send :include, TitleEstuary::InheritedResourcesSupport
     end
-    if Object.const_defined?(:HighVoltage) && base <= ::HighVoltage::PagesController
+    if Object.const_defined?(:HighVoltage) && 
+         HighVoltage.const_defined?(:PagesController) && 
+         base <= ::HighVoltage::PagesController
       base.send :include, TitleEstuary::HighVoltageSupport
     end
   end
