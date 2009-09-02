@@ -32,7 +32,7 @@ module TitleEstuary
         if instance.blank?
           "#{controller.pluralize}: #{action}"
         else
-          ''
+          "#{controller.singularize}: #{instance}: #{action}"
         end
       end.titleize
     end

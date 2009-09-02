@@ -14,6 +14,7 @@ class VillagesController < ApplicationController
   def burninated; index; end
   def show; @village = Village.find(params[:id]); render :nothing => true; end
   def edit; @village = Village.find(params[:id]); render :nothing => true; end
+  def burninate; show; end
   
 end
 
@@ -30,7 +31,8 @@ class DefaultTitlesTest < ActionController::TestCase
     
     setup do
       ActionController::Routing::Routes.draw do |map|
-        map.resources :villages, :collection => { :burninated => :get }
+        map.resources :villages, :collection => { :burninated => :get },
+                                 :member     => { :burninate  => :get }
       end
     end
     
@@ -83,6 +85,14 @@ class DefaultTitlesTest < ActionController::TestCase
     context 'on a GET to a custom collection action' do
       setup { get :burninated }
       should_set_the_page_title_to "Villages: Burninated"
+    end
+    
+    context 'on a GET on a custom member action for a resource that exists' do
+      setup do
+        Village.stubs(:find).returns(Village.new('Parrotshire'))
+        get :burninate, :id => '14'
+      end
+      should_set_the_page_title_to "Village: Parrotshire: Burninate"
     end
     
   end
